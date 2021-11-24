@@ -16,6 +16,7 @@
 		<version.log4j>2.13.3</version.log4j>
 		<version.assertj>3.21.0</version.assertj>
 		<version.bytebuddy>1.12.2</version.bytebuddy>
+		<version.com.infradna.tool.bridge-method>1.21</version.com.infradna.tool.bridge-method>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -36,6 +37,12 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.infradna.tool</groupId>
+			<artifactId>bridge-method-annotation</artifactId>
+			<version>${version.com.infradna.tool.bridge-method}</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
@@ -109,6 +116,18 @@
 								</requireMavenVersion>
 							</rules>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.infradna.tool</groupId>
+				<artifactId>bridge-method-injector</artifactId>
+				<version>${version.com.infradna.tool.bridge-method}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

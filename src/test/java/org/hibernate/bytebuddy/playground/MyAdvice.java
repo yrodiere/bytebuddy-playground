@@ -12,7 +12,17 @@ public class MyAdvice {
 		return new Callable<Object>() {
 			@Override
 			public Object call() throws Exception {
-				return 42;
+				Class<?> returnType = origin.getReturnType();
+				if ( String.class.equals( returnType ) ) {
+					return "42";
+				}
+				else if ( long.class.equals( returnType ) ) {
+					return 42L;
+				}
+				else if ( int.class.equals( returnType ) ) {
+					return 42;
+				}
+				throw new IllegalStateException( "Unsupported return type: " + returnType );
 			}
 		};
 	}
