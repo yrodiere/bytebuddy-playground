@@ -11,6 +11,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.ClassFileVersion;
 import net.bytebuddy.asm.Advice;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
@@ -32,12 +33,12 @@ public class MyTest {
 		System.out.println( "Generated class " + unloadedTypeWithAdvice + " saved to " + files );
 
 		Class<? extends MyClass> typeWithAdvice = unloadedTypeWithAdvice
-				.load( getClass().getClassLoader() )
+				.load( MyClass.class.getClassLoader() )
 				.getLoaded();
 
 		MyClass originalInstance = new MyClass();
 		assertThat( originalInstance.myMethod() ).isEqualTo( 0 );
-		MyClass instanceWithAdvice = typeWithAdvice.getConstructor().newInstance();
+		MyClass instanceWithAdvice = typeWithAdvice.getDeclaredConstructor().newInstance();
 		assertThat( instanceWithAdvice.myMethod() ).isEqualTo( 42 );
 	}
 
