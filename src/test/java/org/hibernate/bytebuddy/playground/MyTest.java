@@ -15,12 +15,16 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.asm.Advice;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.scaffold.MethodGraph;
 
 public class MyTest {
 
 	@Test
 	void test() throws Exception {
 		DynamicType.Unloaded<MyClass> unloadedTypeWithAdvice = new ByteBuddy()
+				// Apply suggestion from https://github.com/raphw/byte-buddy/issues/999#issuecomment-759773044
+				// This does not solve the problem, unfortunately.
+				.with( MethodGraph.Compiler.Default.forJVMHierarchy() )
 				.subclass( MyClass.class )
 				.name( MyClass.class.getName() + "_withAdvice" )
 				.method( named( "myMethod" ) )
