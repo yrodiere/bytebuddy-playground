@@ -1,6 +1,8 @@
 package org.hibernate.bytebuddy.playground;
 
-public class MyClass {
+import org.hibernate.bytebuddy.playground.differentpackage.MySuperClass;
+
+public class MyClass extends MySuperClass {
 
 	public int myMethod() {
 		return 0;

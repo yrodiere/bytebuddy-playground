@@ -1,5 +1,7 @@
 package org.hibernate.bytebuddy.playground;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
@@ -7,21 +9,15 @@ import net.bytebuddy.asm.Advice;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 
 public class MyAdvice {
-	@Advice.OnMethodEnter(inline = false)
-	public static Callable<?> enter(@Advice.Origin Method origin) {
-		return new Callable<Object>() {
-			@Override
-			public Object call() throws Exception {
-				return 42;
-			}
-		};
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface FieldValue {
+
 	}
 
 	@Advice.OnMethodExit
-	public static void exit(
-			@Advice.Return(readOnly = false, typing = Assigner.Typing.DYNAMIC) Object returned,
-			@Advice.Enter Callable<?> mocked)
+	public static void exit(@FieldValue Object fieldValue,
+			@Advice.Return(readOnly = false, typing = Assigner.Typing.DYNAMIC) Object returned)
 			throws Throwable {
-		returned = mocked.call();
+		returned = fieldValue;
 	}
 }
